@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neomuj.mapper.OrderMapper">
+	<insert id="order_add">
+	
+		<!-- selectKey 를 쓸 때는 keyProperty, order, resultType 무조건 들어가야 함. -->
+		<selectKey keyProperty="odr_code" order="BEFORE" resultType="long">
+			select seq_order_code.nextval from dual
+		</selectKey>
+		
+		insert into order_tbl(odr_code, mem_id, odr_name, odr_zipcode, odr_addr, odr_addr_d, odr_phone, odr_total_price)
+		values(#{odr_code}, #{mem_id}, #{odr_name}, #{odr_zipcode}, #{odr_addr}, #{odr_addr_d}, #{odr_phone}, #{odr_total_price})
+		
+	</insert>
+
+
+	<!--장바구니 테이블에 있는 상품을 기반으로 상품상세 테이블  -->
+	<insert id="orderDetail_add">
+	
+		insert into order_detail_tbl(odr_code, pdt_num, odr_amount, odr_price)
+		select #{odr_code}, p.pdt_num, c.cart_amount, p.pdt_price
+		from cart_tbl c inner join product_tbl p
+		on c.pdt_num = p.pdt_num
+		where mem_id = #{mem_id}
+	</insert>
+	
+	<!-- memid2로 바꿔서 트랜잭션 기능이 잘 되는지 확인해보기 -->
+	
+	<insert id="orderDirect_add">
+		insert into order_detail_tbl(odr_code, pdt_num, odr_amount, odr_price)
+		values (#{odr_code}, #{pdt_num}, #{odr_amount}, #{odr_price})
+	</insert>
+	
+		<sql id="criteria">
+		<trim prefix="(" suffix=") and" prefixOverrides="OR">
+			<foreach item="type" collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'N'.toString()">
+							pdt_name like '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'D'.toString()">
+							pdt_detail like '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'C'.toString()">
+							pdt_company like '%' || #{keyword} || '%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+	
+	<select id="orderInfo_list" resultType="com.neomuj.domain.OrderVO">
+		<![CDATA[
+		select odr_code, mem_id, odr_name, odr_zipcode, odr_addr, odr_phone, 
+            	odr_addr_d, odr_total_price, odr_date
+		from(     
+    		select /*+ index_desc(order_tbl pk_odr_code) */ rownum rn, odr_code, mem_id, odr_name, odr_zipcode, odr_addr, odr_phone, 
+            odr_addr_d, odr_total_price, odr_date from order_tbl
+            where odr_code > 0 and 
+        ]]>   
+        
+        	 <!-- <include refid="criteria"></include> -->
+        	 
+        <![CDATA[
+                rownum > 0 and rownum <= (#{pageNum} * #{amount})
+    		)
+		where rn  > (#{pageNum}-1) * #{amount}
+		]]> 
+	</select>
+	
+	<select id="getTotalCountOrder" resultType="int">
+		select count(*) from order_tbl where 
+		
+		<!-- <include refid="criteria"></include> -->
+		
+		<![CDATA[
+		odr_code > 0
+		]]>
+	</select>
+	
+  	<select id="order_detail_list" resultType="com.neomuj.domain.OrderDetailListVO">
+		select od.odr_code, od.pdt_num, p.pdt_img, p.PDT_NAME, p.PDT_PRICE
+		from order_detail_tbl od inner join product_tbl p
+		on od.pdt_num = p.pdt_num
+		where od.odr_code = #{odr_code}
+	</select> 
+	
+<!-- 	 	<select id="order_detail_info" resultType="com.neomuj.domain.OrderDetailVO">
+		select od.odr_code, od.pdt_num, p.pdt_img, p.PDT_IMG, p.PDT_NAME, p.PDT_PRICE,
+		from order_detail_tbl od inner join product_tbl p
+		on od.pdt_num = p.pdt_num
+		where od.odr_code = #{odr_code}
+	</select>  -->
+	
+	  
+<select id="order_sale" resultType="com.neomuj.dto.OrderSaleDTO">
+		<![CDATA[
+		select to_char(b.dt, 'YYYY-MM-DD') as hiredate , to_char(b.dt,'DY') as day, nvl(a.cnt,0) as cnt
+		from (
+		        select to_char(hire_date, 'YYYY-MM-DD') as hiredate, count(*) as cnt
+		        from employees
+		        where hire_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD')
+		        group by hire_date
+		     ) a
+		     ,
+		     (
+		         select to_date(#{startDate},'YYYY-MM-DD') + level  - 1 as dt
+		        from dual
+		        connect by level <= (to_date(#{endDate},'YYYY-MM-DD') - to_date(#{startDate},'YYYY-MM-DD')+ 1)
+		     ) b
+		where b.dt = a.hiredate(+)
+		order by b.dt
+		]]>
+	</select>
+	
+
+</mapper>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neomuj.mapper.CartMapper">
+
+	<insert id="add_cart">
+	
+		merge into cart_tbl c
+		using dual
+		on (mem_id = #{mem_id} and pdt_num = #{pdt_num})
+		when MATCHED then
+		    update set cart_amount = cart_amount + #{cart_amount}
+		when not matched then
+		    insert(cart_code, pdt_num, mem_id, cart_amount) 
+		    values(seq_cart_code.nextval, #{pdt_num},#{mem_id}, #{cart_amount})
+	
+	</insert>
+
+	<select id="list_cart" resultType="com.neomuj.domain.CartVOList" >
+		select c.cart_code, p.pdt_img, p.pdt_name, c.cart_amount, p.pdt_price
+		from
+		product_tbl p inner join cart_tbl c
+		on p.pdt_num = c.pdt_num
+		where c.mem_id = #{mem_id}
+	
+	</select>
+	
+	<!-- 전체 삭제 -->
+	<delete id="cartAll_delete">
+		delete from cart_tbl where mem_id = #{mem_id}
+	</delete>
+	
+	<!-- 개별 삭제 -->
+	<delete id="cart_clean">
+	
+		delete from cart_tbl where cart_code = #{cart_code}
+	
+	</delete>
+	
+	<update id="cart_modify">
+		update cart_tbl
+		set cart_amount = #{cart_amount}
+		where cart_code = #{cart_code}
+	</update>
+	
+	<!-- 선택된 상품을 삭제 -->
+	<delete id="cart_check_delete">
+		delete from cart_tbl 
+		where cart_code in 
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!-- 선택된 상품을 제외한 상품 삭제 -->
+	<delete id="cart_not_check_delete">
+		delete from cart_tbl 
+		where cart_code not in 
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<select id="cart_money" resultType="com.neomuj.dto.CartDTO">
+		select p.pdt_num, sum(p.pdt_price *  c.cart_amount) amount
+		from cart_tbl c inner join product_tbl p
+		on c.pdt_num = p.pdt_num
+		group by p.pdt_name
+		order by p.pdt_name
+	</select>
+	
+
+</mapper>

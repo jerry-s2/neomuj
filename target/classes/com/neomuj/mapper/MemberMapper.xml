@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neomuj.mapper.MemberMapper">
+	<insert id="join">
+		insert into member_tbl(mem_id, mem_name, mem_pw, mem_email, mem_zipcode, 
+			mem_addr, mem_addr_d, mem_phone, mem_nick, mem_accept_e)
+		values(#{mem_id}, #{mem_name}, #{mem_pw}, #{mem_email}, #{mem_zipcode},
+			#{mem_addr}, #{mem_addr_d}, #{mem_phone}, #{mem_nick}, #{mem_accept_e})
+	</insert>
+	
+	<select id="checkIdDuplicate" resultType="int">
+		select count(*)
+		from member_tbl
+		where mem_id = #{mem_id}
+	</select>
+	
+	<select id="login_ok" resultType="com.neomuj.domain.MemberVO">
+		select * from member_tbl where mem_id = #{mem_id}
+	</select>
+	
+	<select id="member_info" resultType="com.neomuj.domain.MemberVO">
+		select * from member_tbl where mem_id = #{mem_id}
+	</select>
+	
+	<update id="modifyPOST">
+		update member_tbl
+		
+		    set MEM_EMAIL = #{mem_email}
+		    ,   MEM_ZIPCODE = #{mem_zipcode}
+		    ,   MEM_ADDR = #{mem_addr}
+		    ,   MEM_ADDR_D = #{mem_addr_d}
+		    ,   MEM_PHONE = #{mem_phone}
+		    ,   MEM_NICK = #{mem_nick}
+		    ,   MEM_ACCEPT_E = #{mem_accept_e}
+		    ,   MEM_DATE_UP = sysdate
+		    
+		where mem_id = #{mem_id}
+	</update>
+	
+	<delete id="member_delete">
+		delete from member_tbl where mem_id = #{mem_id}
+	</delete>
+	
+	<select id="find_id" resultType="string">
+		select mem_id from member_tbl where mem_name = #{mem_name}
+	</select>
+	
+	<select id="find_pwd" resultType="com.neomuj.domain.MemberVO">
+		select * from member_tbl where mem_id = #{mem_id} and mem_name = #{mem_name}
+	</select>
+	
+	<!--  VO 클래스 필드와 테이블 컬럼명이 다른 경우 -->
+	
+	<!-- mem_pw, mem_id, mem_email, mem_name, mem_zipcode, mem_addr, mem_addr_d, 
+	mem_phone, mem_nick, mem_accept_e, mem_point, mem_date_up, mem_date_sub, mem_date_last, 
+	\mem_authcode, mem_session_key, mem_session_limit -->
+	
+	<resultMap type="com.neomuj.domain.UserInfoVO" id="userinfo">
+		<id property="user_id" column="mem_id" />
+		<result property="user_id" column="mem_id" />
+		<result property="user_name" column="mem_name" />
+		<result property="user_pw" column="mem_pw" />
+		<result property="user_email" column="mem_email" />
+		<result property="user_zipcode" column="mem_zipcode" />
+		<result property="user_addr" column="mem_addr" />
+		<result property="user_addr_d" column="mem_addr_d" />
+		<result property="user_phone" column="mem_phone" />
+		<result property="user_nick" column="mem_nick" />
+		<result property="user_accept_e" column="mem_accept_e" />
+		<result property="user_point" column="mem_point" />
+		<result property="user_date_sub" column="mem_date_sub" />
+		<result property="user_date_up" column="mem_date_up" />
+		<result property="user_date_last" column="mem_date_last" />
+		
+	
+	</resultMap>
+	
+	<select id="userinfo_list" resultMap="userinfo">
+	select mem_id, mem_name, mem_pw, mem_email, mem_addr, mem_zipcode, mem_addr_d, mem_phone, mem_accept_e, 
+        	mem_nick, mem_point, mem_date_sub, mem_date_up, mem_date_last
+    from member_tbl
+	</select>
+	
+	<!-- 임시 비밀번호를 발급, 비밀번호 변경  -->
+	<update id="pw_search">
+		update member_tbl set mem_pw = #{mem_pw} where mem_id = #{mem_id}
+	</update>
+	
+	<update id="modify_pw">
+		update member_tbl set mem_pw = #{mem_pw} where mem_id = #{mem_id}
+	</update>
+
+</mapper>
