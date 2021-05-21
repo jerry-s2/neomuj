@@ -2,8 +2,6 @@ package com.neomuj.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.neomuj.domain.CategoryVO;
 import com.neomuj.domain.ProductVO;
 import com.neomuj.dto.Criteria;

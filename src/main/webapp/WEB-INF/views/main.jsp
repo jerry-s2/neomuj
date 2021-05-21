@@ -32,11 +32,11 @@
 	} else if (message == 'logout') {
 		alert('로그아웃되었습니다.');
 	} else if (message == 'modifySuccess') {
-		alert('회원수정이 되었습니다.');
+		alert('회원정보가 수정되었습니다.');
 	} else if (message == 'insertSuccess') {
-		alert('회원가입이 되었습니다.');
+		alert('회원가입을 축하합니다.');
 	} else if (message == 'regdelete') {
-		alert('회원삭제가 되었습니다.');
+		alert('정상적으로 탈퇴되었습니다.');
 	} else if (message == "modifyPwSuccess"){
 		alert('비밀번호가 변경되었습니다.')
 	}

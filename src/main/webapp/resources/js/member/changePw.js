@@ -58,7 +58,7 @@ $(document).ready(function(){
 		
 	});
 	
-	$("#btn_cancle").on("click", function(){
+	$("#btn_cancel").on("click", function(){
 		
 		var result = confirm("비밀번호 변경을 취소하시겠습니까?");
 		if(result){

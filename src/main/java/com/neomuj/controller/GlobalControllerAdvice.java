@@ -23,5 +23,6 @@ public class GlobalControllerAdvice {
 		log.info("톰캣서비스 시작....");
 		
 		model.addAttribute("mainCateList", userProductService.getCategoryList());
+		
 	}
 }

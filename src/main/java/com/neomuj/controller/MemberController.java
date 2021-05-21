@@ -65,8 +65,6 @@ public class MemberController {
 		if(vo != null) {
 			
 			if(cryPassEnc.matches(dto.getMem_pw(), vo.getMem_pw())){
-//				vo.setMem_pw("");
-//				session.setAttribute("loginStatus", vo);//세션정보로 인증상태를 저장
 				
 				// 인터셉트에서 참조할 모델 작업
 				model.addAttribute("memberVO", vo);
@@ -152,7 +150,7 @@ public class MemberController {
 		return entity;
 	}
 	
-	/*
+	/* 보안으로 인해 잠시 빼놓음
 	// 인증코드 확인 
 	@ResponseBody
 	@RequestMapping(value = "checkAuthcode", method=RequestMethod.POST)
@@ -181,6 +179,32 @@ public class MemberController {
 		return entity;
 	}
 	*/
+	
+	// 아이디찾기 폼
+		@GetMapping("/find_id")
+		public void find_id() {
+			log.info("find_id");
+		}
+
+		// 아이디찾기기능(ajax적용) : 화면출력
+		@ResponseBody
+		@PostMapping("/find_id")
+		public ResponseEntity<String> find_id(@RequestParam("mem_name") String mem_name) throws Exception {
+
+			log.info("이름? " + mem_name);
+
+			ResponseEntity<String> entity = null;
+
+			String mem_id = service.find_id(mem_name);
+
+			if(mem_id != null) {
+				entity = new ResponseEntity<String>(mem_id, HttpStatus.OK);
+			}else {
+				entity = new ResponseEntity<String>(HttpStatus.OK);
+			}
+
+			return entity;
+		}
 	
 	//비밀번호 찾기 폼
 	@GetMapping("/find_pwd")
@@ -311,36 +335,39 @@ public class MemberController {
 	}
 	
 	// 회원탈퇴하기
-	@GetMapping("/mypage/mypage_delete_mem")
-	public ResponseEntity<String> delete(HttpSession session, RedirectAttributes rttr, String mem_id, LoginDTO dto) throws Exception{
+	@PostMapping("/mypage/mypage_delete_mem")
+	public String delete(HttpSession session, RedirectAttributes rttr, String mem_id, MemberVO vo) throws Exception{
 		
 		log.info("delete");
 		
-		ResponseEntity<String> entity = null;
+		String result = "";
 		
 		String pw =  ((MemberVO) session.getAttribute("loginStatus")).getMem_pw();
 		
-		log.info(pw);
+		String mem_pw = vo.getMem_pw();
 		
-		if(pw == dto.getMem_pw()) {
+		String id =  ((MemberVO) session.getAttribute("loginStatus")).getMem_id();
+		vo.setMem_id(id);
+		
+		log.info("pw 는 ? " + pw);
+		
+		if(cryPassEnc.matches(mem_pw, pw)) {
+			
+			vo.setMem_pw(cryPassEnc.encode(vo.getMem_pw()));
+			
+			log.info("가져온 비밀번호는? " + vo.getMem_pw());
+			
 			service.member_delete(mem_id);
 			session.invalidate();
-			
-			String result = "regdelete";
-			
-			
-			
-			rttr.addFlashAttribute("status", result); // 루트(/)주소로 이동시 main.jsp에서 참조
-			
-			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			result = "regdelete";
+
 			
 		}else {
-			
-			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			log.info("다시 시도해주세요.");
 		}
 		
 		
-		return entity;
+		return "redirect:/";
 	}
 	
 	
@@ -366,7 +393,7 @@ public class MemberController {
 		vo.setMem_id(id);
 		
 		if(cryPassEnc.matches(mem_pw, pw)) {
-			vo.setMem_pw(cryPassEnc.encode(vo.getMem_pw_change()));
+			vo.setMem_pw(cryPassEnc.encode(vo.getMem_pw()));
 			
 			log.info(mem_pw);
 			
@@ -383,52 +410,6 @@ public class MemberController {
 		
 		
 	}
-	
-//	@PostMapping("/pw_update")
-//	public String updatePOST(MemberVO vo, RedirectAttributes rttr, HttpSession session) throws Exception {
-//
-//      String result ="";
-//      
-//      System.out.println("session에 있는걸 MemberVO에 담기 : " + ((MemberVO) session.getAttribute("loginStatus")));
-//      
-//      // 1. 세션에 담겨있는 password (암호화되어 있음)
-//      String loginPassword = ((MemberVO) session.getAttribute("loginStatus")).getMem_pw();
-//      System.out.println("session에 있는 비밀번호 : " + ((MemberVO) session.getAttribute("loginStatus")).getMem_pw());
-//      
-//      
-//      // 2. 화면에서 가져온 password (원본)
-//      String mem_pw = vo.getMem_pw();
-//      System.out.println("화면에서 가져온 기존비밀번호(원본) : " + mem_pw);
-//      
-//      
-//      // session에 담겨있는 memb_id를 vo에 담기
-//      String mem_id = ((MemberVO) session.getAttribute("loginStatus")).getMem_id();
-//      vo.setMem_id(mem_id);
-//      
-//      // 위에 사용한 match를 참고해보니,
-//      // matches(기존비밀번호(원본),  세션에 담겨있는 비밀번호(암호화))
-//      if(cryPassEnc.matches(mem_pw, loginPassword)){
-//         System.out.println("일치함");
-//         
-//         // vo에서 받아온 비밀번호를 암호화 해서 다시 vo에 담기 
-//         vo.setMem_pw(cryPassEnc.encode(vo.getMem_pw1()));
-//
-//         
-//         // 여기에 신규 password update (일단 주석해놓음)
-//	         service.pw_search(vo);
-//	        
-//	         
-//	         result = "updateSuccess";
-//      } else {
-//         System.out.println("불일치함");
-//         
-//      }
-//      
-//      rttr.addFlashAttribute("status", result);
-//
-//      return "redirect:/";
-
-//   }
 	
 	
 }

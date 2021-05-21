@@ -221,7 +221,7 @@
 							<button type="submit" id="btn_submit" class="btn btn-primary">
 								구매하기 <i class="fa fa-check spaceLeft"></i>
 							</button>
-							<button type="button" id="btn_cancle" class="btn btn-warning">
+							<button type="button" id="btn_cancel" class="btn btn-warning">
 								구매취소 <i class="fa fa-times spaceLeft"></i>
 							</button>
 						</div>

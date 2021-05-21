@@ -88,7 +88,7 @@
     <%-- Main content --%>
 			<section class="content container-fluid">
 				<div class="container" style="width: 70%; min-width: 900px; background-color: white; font-size: 14px;" >
-					<form id="deleteForm" action="/member/mypage/mypage_delete" method="get">
+					<form id="deleteForm" action="/member/mypage/mypage_delete_mem" method="post">
 						<div class="container" style="width: 800px; padding: 10% 5%;">
 							<h2 class="form-signin-heading">Delete your account</h2>
 							<br><br>
@@ -105,10 +105,10 @@
 							</div>
 						</div>
 						<div class="form-group text-center">
-							<button type="button" id="btn_delete" class="btn btn-success">
+							<button type="submit" id="btn_delete" class="btn btn-success">
 								탈퇴하기 <i class="fa fa-check spaceLeft"></i>
 							</button>
-							<button type="button" id="btn_cancle" class="btn btn-secondary">
+							<button type="button" id="btn_cancel" class="btn btn-secondary">
 								취소하기 <i class="fa fa-times spaceLeft"></i>
 							</button>
 						</div>
@@ -127,24 +127,11 @@
 	<script>
 		$(document).ready(function(){
 			
+			var form = $("#deleteForm");
+			
 			$("#btn_delete").on("click",function(){
 				
-				var mem_pw = $("#mem_pw").val();
-			
-				alert(mem_pw);
-				
-				$.ajax({
-					url: "/member/mypage/mypage_delete_mem",
-					type: "get",
-					datatype: "text",
-					data: {mem_pw : mem_pw},
-					success: function(data){
-						if(data=='SUCCESS'){
-						alert('정상적으로 탈퇴되었습니다.');
-						location.href="/";
-						}
-					}
-				});
+				form.submit();
 				
 			});
 			

@@ -118,7 +118,7 @@
 						<div class="form-group text-center">
 							<button type="submit" id="btn_modify_pw" class="btn btn-secondary">비밀번호 변경<i class="fa fa-check spaceLeft"></i>
 							</button>
-							<button type="button" id="btn_cancle" class="btn btn-secondary">
+							<button type="button" id="btn_cancel" class="btn btn-secondary">
 								변경취소 <i class="fa fa-times spaceLeft"></i>
 							</button>
 						</div>

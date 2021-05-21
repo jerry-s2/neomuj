@@ -11,7 +11,7 @@ $(document).ready(function(){
 
     });
     
-    $("#btn_cancle").on("click", function(){
+    $("#btn_cancel").on("click", function(){
 		
 		var result = confirm("회원 정보 수정을 취소하시겠습니까?");
 		if(result){

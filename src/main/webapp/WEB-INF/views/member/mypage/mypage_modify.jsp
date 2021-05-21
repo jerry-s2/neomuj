@@ -159,7 +159,7 @@
 							<button type="button" id="btn_modify_info" class="btn btn-success">
 								회원수정 <i class="fa fa-check spaceLeft"></i>
 							</button>
-							<button type="button" id="btn_cancle" class="btn btn-secondary">
+							<button type="button" id="btn_cancel" class="btn btn-secondary">
 								수정취소 <i class="fa fa-times spaceLeft"></i>
 							</button>
 						</div>

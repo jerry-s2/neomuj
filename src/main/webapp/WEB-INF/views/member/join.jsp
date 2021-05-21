@@ -131,7 +131,7 @@
 							<button type="button" id="btn_submit" class="btn btn-primary">
 								회원가입 <i class="fa fa-check spaceLeft"></i>
 							</button>
-							<button type="button" id="btn_cancle" class="btn btn-warning">
+							<button type="button" id="btn_cancel" class="btn btn-warning">
 								가입취소 <i class="fa fa-times spaceLeft"></i>
 							</button>
 						</div>

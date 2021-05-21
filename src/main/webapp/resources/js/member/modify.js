@@ -159,7 +159,7 @@ $(document).ready(function() {
 	
 	
 	/* 취소 버튼 클릭 시 */
-	$("#btn_cancle").on("click", function(){
+	$("#btn_cancel").on("click", function(){
 		
 		var result = confirm("회원 정보 수정을 취소하시겠습니까?");
 		if(result){

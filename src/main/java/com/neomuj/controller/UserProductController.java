@@ -34,7 +34,7 @@ public class UserProductController {
 	private String uploadPath;
 	
 	@Setter(onMethod_ = @Autowired)
-	private UserProductService userProductServie;
+	private UserProductService userProductServie;         
 	
 	@ResponseBody
 	@GetMapping("/subCategoryList/{cg_code}")
