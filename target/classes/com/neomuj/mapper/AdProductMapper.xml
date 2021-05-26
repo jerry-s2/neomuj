@@ -62,7 +62,7 @@ values(seq_pdt_num.nextval, #{cg_code_prt}, #{cg_code}, #{pdt_name}, #{pdt_price
     pdt_company, pdt_detail, pdt_img, pdt_amount, pdt_buy, pdt_date_sub, pdt_date_up
 	from 
 	
-	    (select /*+ index_desc(product_tbl pk_pdt_num ) */ rownum rn, pdt_num, cg_code, cg_code_prt, pdt_name, pdt_price, pdt_discount, 
+	    (select /*+ index_desc(product_tbl pk_pdt_num) */ rownum rn, pdt_num, cg_code, cg_code_prt, pdt_name, pdt_price, pdt_discount, 
 	        pdt_company, pdt_detail, pdt_img, pdt_amount, pdt_buy, pdt_date_sub, pdt_date_up
 	    from product_tbl where pdt_num > 0 and 
 	]]>    

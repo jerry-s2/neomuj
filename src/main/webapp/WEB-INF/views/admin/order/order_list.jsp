@@ -89,9 +89,7 @@ desired effect
 	<div class="row">
 	  	<div class="col-lg-12">
 	  		<div class="panel panel-default">
-	  			<div class="panel-heading text-right">
-	  			 <button id="regBtn" type="button" class="btn btn-primary pull-right">글쓰기</button>
-	  			</div>
+
 	  			
 	  			<div class="panel-body">
 	  			 <!-- 리스트 -->
@@ -364,9 +362,9 @@ desired effect
 </script>
 
 <script>
-// 핸들바의 사용자 정의 함수
+// 핸들바의 사용자 정의 함수4
 
-Handelbars.registerHelper("total_price", function(odr_price, odr_amount){
+Handlebars.registerHelper("total_price", function(odr_price, odr_amount){
 	
 	return odr_price * odr_amount;
 }); 

@@ -86,8 +86,10 @@
 		
 		<interceptor>
 			<mapping path="/member/mypage/*" />
+			<mapping path="/review/*"/>
 			<beans:ref bean="userAuthInterceptor" />
 		</interceptor>
+
 	
 	</interceptors>
 	

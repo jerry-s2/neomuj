@@ -99,6 +99,7 @@ public class AdOrderController {
 			
 		}catch(Exception e) {
 			e.printStackTrace();
+			entity = new ResponseEntity<List<OrderDetailListVO>>(HttpStatus.BAD_REQUEST);
 		}
 		
 		
