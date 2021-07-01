@@ -9,6 +9,8 @@ import lombok.Data;
 public class OrderSaleDTO {
 	
 
+	// 
+	
 	private Date dat;
 	private String day;
 	private int cnt;

@@ -142,19 +142,19 @@
 					    </li>
 				    </c:if>
 				    <c:forEach begin="${pageMaker.startPage }" end="${ pageMaker.endPage}" var="num">
-				    	<li class="page-item ${pageMaker.cri.pageNum == num ? "active" : ""}">
-				    		<a href="${num }" class="page-link" href="#">${num }</a>
+				    	<li class="page-item ${pageMaker.cri.pageNum == num ? 'active' : ''}">
+				    		<a href="${num }" class="page-link">${num }</a>
 				    	</li>
 				    </c:forEach>
 				    <c:if test="${pageMaker.next }">
 					    <li class="page-item">
-					      <a href="${pageMaker.endPage + 1 }" class="page-link" href="#">Next</a>
+					      <a href="${pageMaker.endPage + 1 }" class="page-link" >Next</a>
 					    </li>
 				    </c:if>
 				  </ul>
 		
 		    				<hr>
-		    				${pageMaker }
+	<%-- 	    				${pageMaker } --%>
     			</div>
     	</div>
     </div>
@@ -282,10 +282,14 @@ Handlebars.registerHelper("total_price", function(odr_price, odr_amount){
 
 			actionForm.find("input[name='pageNum']").val($(this).attr("href"));
 			actionForm.submit();
+			
+		});
+		
 
 
 	});
-	
+		
+
 	
 
 </script>

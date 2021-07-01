@@ -106,7 +106,7 @@ desired effect
 		    </div>
 		   
 		    <!-- 페이징 표시 --> 
-		   <%--  <div class="row">
+		     <div class="row">
 		    	<div class="col-lg-12">
 		    	<!-- 페이징 표시 -->
 		    			<div class="panel-footer">
@@ -117,7 +117,7 @@ desired effect
 							    </li>
 						    </c:if>
 						    <c:forEach begin="${pageMaker.startPage }" end="${ pageMaker.endPage}" var="num">
-						    	<li class="page-item ${pageMaker.cri.pageNum == num ? "active" : ""}">
+						    	<li class="page-item ${pageMaker.cri.pageNum == num ? 'active' : ''}">
 						    		<a href="${num }" class="page-link" href="#">${num }</a>
 						    	</li>
 						    </c:forEach>
@@ -132,7 +132,7 @@ desired effect
 			    				${pageMaker }
 	    			</div>
 		    	</div>
-		    </div> --%>
+		    </div>
 		    
 		    <!-- 페이지번호클릭시, 수정클릭시, 삭제클릭시 상품코드정보 추가 -->
 <%-- 		    <form id="actionForm" action="/admin/order/order_list" method="get">
@@ -251,7 +251,7 @@ desired effect
 
 			actionForm.find("input[name='pageNum']").val($(this).attr("href"));
 			actionForm.submit();
-
+		});
 
 	});
 	

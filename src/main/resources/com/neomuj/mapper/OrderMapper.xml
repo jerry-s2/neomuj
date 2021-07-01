@@ -51,6 +51,7 @@
 		</trim>
 	</sql>
 	
+	<!--  주문목록 -->
 	<select id="orderInfo_list" resultType="com.neomuj.domain.OrderVO">
 		<![CDATA[
 		select odr_code, mem_id, odr_name, odr_zipcode, odr_addr, odr_phone, 
@@ -80,6 +81,7 @@
 		]]>
 	</select>
 	
+	<!-- 주문 목록 상세 -->
   	<select id="order_detail_list" resultType="com.neomuj.domain.OrderDetailListVO">
 		select od.odr_code, od.pdt_num, od.odr_amount, od.odr_price, p.PDT_NAME, p.PDT_img
 		from order_detail_tbl od inner join product_tbl p
@@ -95,6 +97,7 @@
 	</select>  -->
 	
  
+ <!-- 통계매출 -->
  	<select id="order_sale" resultType="com.neomuj.dto.OrderSaleDTO">
 		<![CDATA[
 		select b.dat, to_char(b.dat, 'DY') as day, nvl(a.cnt, 0) as cnt, nvl(total, 0) as price
