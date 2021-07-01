@@ -108,7 +108,7 @@
 		        from dual
 		        connect by level <= (to_date(#{endDate}, 'YYYY-MM-DD') - to_date(#{startDate}, 'YYYY-MM-DD') + 1)
 		      ) b
-		where b.dat = a.odt(+)
+		where b.dat = a.odt(+) 
 		order by b.dat
 		]]>
 	</select>
