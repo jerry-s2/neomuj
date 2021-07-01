@@ -15,7 +15,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
 <!-- css file -->
 <%@include file="/WEB-INF/views/admin/include/head_inc.jsp" %>
-<script src="/ckeditor/ckeditor.js"></script>
+<!-- <script src="/ckeditor/ckeditor.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 
 </head>
@@ -74,70 +74,68 @@ desired effect
 				<c:set var="year" ><fmt:formatDate value="${today }" pattern="yyyy"/></c:set>
 				<c:set var="month" ><fmt:formatDate value="${today }" pattern="MM"/></c:set>
 				<select name="year" id="type">
-				<c:forEach begin="0" end="2" var="i" step="1">
-					<option value="<c:out value="${year-2+i }" />
-					<c:out value="${year-2+i }" />" ${(year-2+i ) == sel_year ? 'selected' : ''}><c:out value="${year-2+i }" />
+				<c:forEach begin="0" end="4" var="i" step="1">
+					<option value="<c:out value="${year-2+i }" />" ${year-2+i == year ? 'selected' : ''}>
+					<c:out value="${year-2+i }" />
 					</option>
 				</c:forEach>
 				
 				<c:forEach begin="1" end="2" var="i" step="1">
 					<option value="<c:out value="${year+i }" />" ${(year+i) == sel_year ? 'selected' : '' }><c:out value="${year+i }" /></option>
 				</c:forEach>
-				</select>년
+				</select><span>년</span>
 				<select name="month" id="type">
 					<c:forEach begin="1" end="12" var="i" step="1">
 					<fmt:formatNumber var="dal" minIntegerDigits="2" value="${i }" type="number" />
-					<fmt:formatNumber var="cur_month" minIntegerDigits="2" value="${month }" type="number" />
-						<option value="${dal }" ${dal == sel_month ? 'selected' : '' }>${dal }</option>
+					<%-- <fmt:formatNumber var="cur_month" minIntegerDigits="2" value="${month }" type="number" /> --%>
+						<option value="${dal }" ${dal == sel_month ? 'selected' : '' }><c:out value="${dal }" /></option>
 					</c:forEach>
-				</select>월
+				</select><span>월</span>
 				<button id="btnSearch" type="submit" class="btn btn-primary">검색</button>
 				
 			</form>
+				<fmt:formatNumber var="month2" minIntegerDigits="2" value="${sel_month}" type="number"/>
+				<input type="hidden" id="year_select" value="${sel_year}">
+				<input type="hidden" id="month_select" value="${month2}">
 		</div>
 	</div>
 			
 
 <!-- 상품리스트 -->
-	<div class="row">
-	  	<div class="col-lg-12">
-	  		<div class="panel panel-default">
-	  			<div class="panel-heading text-right">
-	  			 <button id="regBtn" type="button" class="btn btn-primary pull-right">글쓰기</button>
-	  			</div>
-	  			
-	  			<div class="panel-body">
-	  			 <!-- 리스트 -->
-	  			 <table class="table table-striped">
-			  <thead>
-			    <tr>
-			      <th scope="col">일별통계</th>
-			      <th scope="col">주문건수</th>
-			    </tr>
-			  </thead>
-			  <tbody>
-			  											<!-- varStatus : 상태변수 -->
-			  <c:forEach items="${order_salelist }" var="orderSaleDTO">
-			    <tr>
-			      <th scope="row"> 
-			     	${orderSaleDTO.hiredate }(${orderSaleDTO.day })
-			     </th>
-				<td>
-				 	${orderSaleDTO.cnt}
-				</td>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 style="display: inline;">매출통계</h4>
+			
+							</div>
+							<div class="panel-body">
+								<!-- 리스트(테이블) 삽입 -->
+								<table class="table table-striped">
+								  <thead>
+								    <tr>
+								      <th scope="col">날짜</th>
+								      <th scope="col">주문건수</th>
+								      <th scope="col">총 매출</th>
+								    </tr>
+								  </thead>
+								  <tbody>
+								  <c:forEach items="${order_salelist}" var="sales">
+								    <tr>
+								      <td><fmt:formatDate value="${sales.dat}" pattern="yyyy-MM-dd" /> (${sales.day})</td>
+								      <td><c:out value="${sales.cnt}" /></td>
+								      <td><fmt:formatNumber type="currency" value="${sales.price}" /></td>
+							        </tr>
+							      </c:forEach>
+								  </tbody>
+								</table>
+							</div>
+						</div>
+			   		</div>
+				</div>
 				
-				  <!-- <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${orderVO.odr_date }"/></td> --> 
-
-			    </tr>
-			   </c:forEach>
-			   </tbody>
-			</table>
-	  			</div>
-	  		</div>
-	  	</div>
-	  </div>
-
 			</section>
+
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->

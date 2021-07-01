@@ -2,13 +2,16 @@ package com.neomuj.service;
 
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.neomuj.domain.OrderDetailListVO;
 import com.neomuj.domain.OrderDetailVO;
 import com.neomuj.domain.OrderVO;
-import com.neomuj.domain.OrderDetailListVO;
+import com.neomuj.dto.ChartDTO;
 import com.neomuj.dto.Criteria;
 import com.neomuj.dto.OrderSaleDTO;
 import com.neomuj.mapper.CartMapper;
@@ -70,6 +73,64 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.order_sale(startDate, endDate);
 	}
 
+	@Override
+	public List<ChartDTO> salesChart() throws Exception {
+		// TODO Auto-generated method stub
+		return orderMapper.salesChart();
+	}
+
+
+	@Override
+	public JSONObject chartData() throws Exception {
+		
+		List<ChartDTO> items = orderMapper.salesChart();
+		
+		JSONObject col1 = new JSONObject(); // {"label", "날짜"}
+		JSONObject col2 = new JSONObject();
+		//JSONObject col3 = new JSONObject();
+
+		col1.put("label", "날짜");
+		col2.put("label", "매출액");
+		//col3.put("label", "주문개수");
+		
+		col1.put("type", "string");
+		col2.put("type", "number");
+		//col3.put("type", "number");
+		
+		JSONArray title = new JSONArray(); // [{}, {}, {}, ...]
+		title.add(col1);
+		title.add(col2);
+		//title.add(col3);
+		
+		JSONObject data = new JSONObject();// {"cols", [{}, {}, ...]}
+        data.put("cols", title);
+		
+        JSONArray body = new JSONArray();
+        for(ChartDTO dto : items) {
+        	
+        	JSONObject date = new JSONObject();
+        	date.put("v", dto.getChart_date());
+        	
+        	JSONObject price = new JSONObject();
+        	price.put("v", dto.getChart_price());
+        	
+//        	JSONObject count = new JSONObject();
+//        	count.put("v", dto.getChart_count());
+        	
+        	JSONArray row = new JSONArray();
+        	row.add(date);
+        	row.add(price);
+        	//row.add(count);
+        	
+        	JSONObject cell = new JSONObject(); 
+            cell.put("c", row);
+            
+            body.add(cell);
+        }
+        data.put("rows", body);
+        
+		return data;
+	}
 
 //	@Override
 //	public List<OrderDetailVO> order_detail_info(String odr_code) throws Exception {

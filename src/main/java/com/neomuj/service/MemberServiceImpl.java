@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.neomuj.domain.MemberVO;
+import com.neomuj.domain.OrderDetailListVO;
+import com.neomuj.domain.OrderVO;
 import com.neomuj.domain.UserInfoVO;
+import com.neomuj.dto.Criteria;
 import com.neomuj.dto.LoginDTO;
+import com.neomuj.dto.MyOrderDTO;
 import com.neomuj.mapper.MemberMapper;
 
 import lombok.Setter;
@@ -84,5 +88,24 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return mapper.modify_pw(vo);
 	}
+
+//	@Override
+//	public List<OrderVO> myOrderInfo_list(Criteria cri) throws Exception {
+//		// TODO Auto-generated method stub
+//		return mapper.myOrderInfo_list(cri);
+//	}
+//
+//	@Override
+//	public int getTotalCountOrder(Criteria cri) throws Exception {
+//		// TODO Auto-generated method stub
+//		return mapper.getTotalCountOrder(cri);
+//	}
+//
+//	@Override
+//	public List<OrderDetailListVO> myOrder_detail_list(long odr_code) throws Exception {
+//		// TODO Auto-generated method stub
+//		return mapper.myOrder_detail_list(odr_code);
+//	}
+
 
 }

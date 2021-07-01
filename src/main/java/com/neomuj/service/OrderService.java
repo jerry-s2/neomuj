@@ -2,9 +2,12 @@ package com.neomuj.service;
 
 import java.util.List;
 
+import org.json.simple.JSONObject;
+
 import com.neomuj.domain.OrderDetailListVO;
 import com.neomuj.domain.OrderDetailVO;
 import com.neomuj.domain.OrderVO;
+import com.neomuj.dto.ChartDTO;
 import com.neomuj.dto.Criteria;
 import com.neomuj.dto.OrderSaleDTO;
 
@@ -27,5 +30,8 @@ public interface OrderService {
 	
 	public List<OrderSaleDTO> order_sale(String startDate, String endDate) throws Exception;
 	
+	public List<ChartDTO> salesChart() throws Exception;
+	public JSONObject chartData() throws Exception;
+
 
 }

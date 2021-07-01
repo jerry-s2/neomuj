@@ -74,8 +74,8 @@
 				<h3>My Page</h3>
 				<hr>
 				<div class="icon-bar">
-					<a class="active2" href="/member/mypage/mypage"><i
-						class="fa fa-user"></i></a> <a href="#"><i class="fa fa-truck"></i></a>
+					<a class="active2" href="/member/mypage/mypage"><i class="fa fa-user"></i></a> 
+					<a class="active2" href="/member/mypage/mypage_orderList"><i class="fa fa-truck"></i></a>
 					<a href="#"><i class="fa fa-pencil"></i></a>
 				</div>
 				<hr>

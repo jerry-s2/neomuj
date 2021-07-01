@@ -1,5 +1,7 @@
 package com.neomuj.dto;
 
+import java.util.Date;
+
 import lombok.Data;
 
 
@@ -7,8 +9,9 @@ import lombok.Data;
 public class OrderSaleDTO {
 	
 
-	private String hiredate;
+	private Date dat;
 	private String day;
 	private int cnt;
+	private int price;
 
 }

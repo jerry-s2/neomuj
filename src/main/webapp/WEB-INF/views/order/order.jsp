@@ -113,14 +113,14 @@
 				<!-- 주문 입력 정보 -->
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<form id="orderForm" action="#" method="post">
+						
 						<h3>주문자 정보</h3>
 							
 							<div class="form-group">
 								<label for="inputName">* 이름</label> <input type="text"
 									class="form-control" id="mem_name" name="mem_name" value="${sessionScope.loginStatus.mem_name }"
 									placeholder="이름을 입력해 주세요" style="max-width: 630px;">
-								<%-- <input type="hidden" name="type" value="${type} "> --%>
+								<%-- <input type="hidden" name="type" value="${type}"> --%>
 							</div>
 							<div class="form-group">
 								<label for="inputAddr">* 주소</label> <br />
@@ -158,7 +158,7 @@
 								<p id="authcode_status" style="color: red;"></p>
 							</div>
 							-->
-							</form>
+							
 							<h3>배송정보</h3>
 							
 							<div class="form-check">
@@ -177,7 +177,7 @@
 								<label for="inputName">* 이름</label> <input type="text"
 									class="form-control" id="odr_name" name="odr_name" value="${sessionScope.loginStatus.mem_name }"
 									placeholder="이름을 입력해 주세요" style="max-width: 900px;">
-									<input type="hidden" name="type" value="${type} ">
+									<input type="hidden" name="type" value="${type}">
 							</div>
 							<div class="form-group">
 								<label for="inputAddr">* 주소</label> <br />

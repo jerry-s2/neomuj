@@ -1,6 +1,8 @@
 
 package com.neomuj.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,10 +22,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.neomuj.domain.MemberVO;
+import com.neomuj.domain.OrderDetailListVO;
+import com.neomuj.dto.Criteria;
 import com.neomuj.dto.EmailDTO;
 import com.neomuj.dto.LoginDTO;
+import com.neomuj.dto.PageDTO;
 import com.neomuj.service.EmailService;
 import com.neomuj.service.MemberService;
+import com.neomuj.service.OrderService;
+import com.neomuj.util.FileUploadUtils;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -38,6 +46,9 @@ public class MemberController {
 	
 	@Setter(onMethod_ = @Autowired)
 	private EmailService mailService;
+	
+	@Setter(onMethod_ = @Autowired)
+	private OrderService orderService;
 	
 	
 	@Inject
@@ -411,5 +422,36 @@ public class MemberController {
 		
 	}
 	
+	@RequestMapping(value = "/mypage/mypage_orderList", method = {RequestMethod.GET, RequestMethod.POST})
+	public void order_list(@ModelAttribute("cri") Criteria cri, Model model) throws Exception{
+		
+		log.info("order_list: " + cri);
+		
+		model.addAttribute("order_list", orderService.orderInfo_list(cri));
+		
+		int total = orderService.getTotalCountOrder(cri);
+		
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		
+		
+	}
+	
+	
+	@ResponseBody
+	@GetMapping("/mypage/mypage_order_detail_list")
+	public ResponseEntity<List<OrderDetailListVO>> order_list_detail(long odr_code) throws Exception{
+		
+		ResponseEntity<List<OrderDetailListVO>> entity = null;
+
+
+		try {
+			entity = new ResponseEntity<List<OrderDetailListVO>>(orderService.order_detail_list(odr_code) ,HttpStatus.OK);
+		}catch(Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<List<OrderDetailListVO>>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	
+	}
 	
 }

@@ -70,7 +70,6 @@ desired effect
 		    	<div class="col-lg-12">
 		    		<div class="panel panel-default">
 		    			<div class="panel-heading text-right">
-		    			 <button id="regBtn" type="button" class="btn btn-primary pull-right">글쓰기</button>
 		    			</div>
 		    			
 		    			<div class="panel-body">
@@ -107,7 +106,7 @@ desired effect
 		    </div>
 		   
 		    <!-- 페이징 표시 --> 
-		    <div class="row">
+		   <%--  <div class="row">
 		    	<div class="col-lg-12">
 		    	<!-- 페이징 표시 -->
 		    			<div class="panel-footer">
@@ -133,16 +132,16 @@ desired effect
 			    				${pageMaker }
 	    			</div>
 		    	</div>
-		    </div>
+		    </div> --%>
 		    
 		    <!-- 페이지번호클릭시, 수정클릭시, 삭제클릭시 상품코드정보 추가 -->
-		    <form id="actionForm" action="/admin/order/order_list" method="get">
+<%-- 		    <form id="actionForm" action="/admin/order/order_list" method="get">
 				<input type="hidden" name="pageNum" value='<c:out value="${pageMaker.cri.pageNum }" />'>
 				<input type="hidden" name="amount" value='<c:out value="${pageMaker.cri.amount }" />'>
 				<input type="hidden" name="type" value='<c:out value="${pageMaker.cri.type }" />'>
 				<input type="hidden" name="keyword" value='<c:out value="${pageMaker.cri.keyword }" />'>
 			</form>
-
+ --%>
 			</section>
 			<!-- /.content -->
 		</div>
@@ -238,6 +237,27 @@ desired effect
 	<!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
+     <script>
+	
+	$(document).ready(function(){
+
+		var actionForm = $("#actionForm");
+		
+		// 페이지 번호 클릭
+		$(".page-item a").on("click", function(e){
+			e.preventDefault();
+
+			console.log("click");
+
+			actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+			actionForm.submit();
+
+
+	});
+	
+	
+
+</script>
      
 
 </body>

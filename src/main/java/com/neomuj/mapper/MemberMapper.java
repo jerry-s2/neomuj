@@ -5,8 +5,12 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.neomuj.domain.MemberVO;
+import com.neomuj.domain.OrderDetailListVO;
+import com.neomuj.domain.OrderVO;
 import com.neomuj.domain.UserInfoVO;
+import com.neomuj.dto.Criteria;
 import com.neomuj.dto.LoginDTO;
+import com.neomuj.dto.MyOrderDTO;
 
 public interface MemberMapper {
 
@@ -42,5 +46,11 @@ public interface MemberMapper {
 	// 비밀번호 변경
 	public int modify_pw(MemberVO vo) throws Exception;
 	
-	
+//	public List<OrderVO> myOrderInfo_list(Criteria cri) throws Exception;
+//	
+//	// 주문 상품 개수 (페이징 기능에 사용)
+//	public int getTotalCountOrder(Criteria cri) throws Exception;
+//
+//	public List<OrderDetailListVO> myOrder_detail_list(long odr_code) throws Exception;
+//	
 }

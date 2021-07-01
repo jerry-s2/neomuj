@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.neomuj.domain.OrderDetailListVO;
 import com.neomuj.domain.OrderDetailVO;
 import com.neomuj.domain.OrderVO;
-import com.neomuj.domain.OrderDetailListVO;
+import com.neomuj.dto.ChartDTO;
 import com.neomuj.dto.Criteria;
-import com.neomuj.dto.OrderDetailDTO;
 import com.neomuj.dto.OrderSaleDTO;
 
 public interface OrderMapper {
@@ -27,11 +27,12 @@ public interface OrderMapper {
 	// 주문 상품 개수 (페이징 기능에 사용)
 	public int getTotalCountOrder(Criteria cri) throws Exception;
 	
-//	public List<OrderDetailVO> order_detail_info(String odr_code) throws Exception;
+	// public List<OrderDetailVO> order_detail_info(long odr_code) throws Exception;
 	
 	public List<OrderDetailListVO> order_detail_list(long odr_code) throws Exception;
 	
 	public List<OrderSaleDTO> order_sale(@Param("startDate") String startDate, @Param("endDate") String endDate) throws Exception;
 	
-
+	public List<ChartDTO> salesChart() throws Exception;
+	
 }

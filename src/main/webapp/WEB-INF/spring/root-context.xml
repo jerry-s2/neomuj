@@ -24,7 +24,7 @@
 		<!-- 운영 DB 정보 AWS 오라클-->
 		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
 		<property name="jdbcUrl" value="jdbc:oracle:thin:@jerryserver.csfvk7h61xqc.ap-northeast-2.rds.amazonaws.com:1521:orcl" />
-		 
+
 		<property name="username" value="server01" />
 		<property name="password" value="server01" />
 	</bean>

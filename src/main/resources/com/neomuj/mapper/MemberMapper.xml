@@ -89,5 +89,42 @@
 	<update id="modify_pw">
 		update member_tbl set mem_pw = #{mem_pw} where mem_id = #{mem_id}
 	</update>
+	
+	
+	<select id="myOrderInfo_list" resultType="com.neomuj.domain.OrderVO">
+		<![CDATA[
+		select odr_code, mem_id, odr_name, odr_zipcode, odr_addr, odr_phone, 
+            	odr_addr_d, odr_total_price, odr_date
+		from(     
+    		select /*+ index_desc(order_tbl PK_ODR_CODE) */ rownum rn, odr_code, mem_id, odr_name, odr_zipcode, odr_addr, odr_addr_d, odr_phone, 
+            odr_total_price, odr_date from order_tbl
+            where odr_code > 0 and 
+        ]]>   
+        
+        	 <!-- <include refid="criteria"></include> -->
+        	 
+        <![CDATA[
+                rownum > 0 and rownum <= #{pageNum} * #{amount}
+    		)
+		where rn  > (#{pageNum}-1) * #{amount}
+		]]> 
+	</select>
+	
+	<select id="getTotalCountOrder" resultType="int">
+		select count(*) from order_tbl where 
+		
+		<!-- <include refid="criteria"></include> -->
+		
+		<![CDATA[
+		odr_code > 0
+		]]>
+	</select>
+	
+  	<select id="myOrder_detail_list" resultType="com.neomuj.domain.OrderDetailListVO">
+		select od.odr_code, od.pdt_num, od.odr_amount, od.odr_price, p.PDT_NAME, p.PDT_img
+		from order_detail_tbl od inner join product_tbl p
+		on od.pdt_num = p.pdt_num
+		where od.odr_code = #{odr_code}
+	</select> 
 
 </mapper>

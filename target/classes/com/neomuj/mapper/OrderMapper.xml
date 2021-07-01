@@ -56,15 +56,15 @@
 		select odr_code, mem_id, odr_name, odr_zipcode, odr_addr, odr_phone, 
             	odr_addr_d, odr_total_price, odr_date
 		from(     
-    		select /*+ index_desc(order_tbl pk_odr_code) */ rownum rn, odr_code, mem_id, odr_name, odr_zipcode, odr_addr, odr_phone, 
-            odr_addr_d, odr_total_price, odr_date from order_tbl
+    		select /*+ index_desc(order_tbl PK_ODR_CODE) */ rownum rn, odr_code, mem_id, odr_name, odr_zipcode, odr_addr, odr_addr_d, odr_phone, 
+            odr_total_price, odr_date from order_tbl
             where odr_code > 0 and 
         ]]>   
         
         	 <!-- <include refid="criteria"></include> -->
         	 
         <![CDATA[
-                rownum > 0 and rownum <= (#{pageNum} * #{amount})
+                rownum > 0 and rownum <= #{pageNum} * #{amount}
     		)
 		where rn  > (#{pageNum}-1) * #{amount}
 		]]> 
@@ -81,7 +81,7 @@
 	</select>
 	
   	<select id="order_detail_list" resultType="com.neomuj.domain.OrderDetailListVO">
-		select od.odr_code, od.pdt_num, p.pdt_img, p.PDT_NAME, p.PDT_PRICE
+		select od.odr_code, od.pdt_num, od.odr_amount, od.odr_price, p.PDT_NAME, p.PDT_img
 		from order_detail_tbl od inner join product_tbl p
 		on od.pdt_num = p.pdt_num
 		where od.odr_code = #{odr_code}
@@ -94,26 +94,33 @@
 		where od.odr_code = #{odr_code}
 	</select>  -->
 	
-	  
-<select id="order_sale" resultType="com.neomuj.dto.OrderSaleDTO">
+ 
+ 	<select id="order_sale" resultType="com.neomuj.dto.OrderSaleDTO">
 		<![CDATA[
-		select to_char(b.dt, 'YYYY-MM-DD') as hiredate , to_char(b.dt,'DY') as day, nvl(a.cnt,0) as cnt
-		from (
-		        select to_char(hire_date, 'YYYY-MM-DD') as hiredate, count(*) as cnt
-		        from employees
-		        where hire_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD')
-		        group by hire_date
-		     ) a
-		     ,
-		     (
-		         select to_date(#{startDate},'YYYY-MM-DD') + level  - 1 as dt
+		select b.dat, to_char(b.dat, 'DY') as day, nvl(a.cnt, 0) as cnt, nvl(total, 0) as price
+		from (  select to_char(odr_date, 'YYYY-MM-DD') as odt, count(*) cnt, sum(odr_total_price) as total
+		        from order_tbl
+		        where odr_date between to_date(#{startDate}, 'YYYY-MM-DD') and to_date(#{endDate}, 'YYYY-MM-DD')
+		        group by to_char(odr_date, 'YYYY-MM-DD')
+		      ) a
+		      ,
+		     (  select to_date(#{startDate}, 'YYYY-MM-DD') + level - 1 as dat
 		        from dual
-		        connect by level <= (to_date(#{endDate},'YYYY-MM-DD') - to_date(#{startDate},'YYYY-MM-DD')+ 1)
-		     ) b
-		where b.dt = a.hiredate(+)
-		order by b.dt
+		        connect by level <= (to_date(#{endDate}, 'YYYY-MM-DD') - to_date(#{startDate}, 'YYYY-MM-DD') + 1)
+		      ) b
+		where b.dat = a.odt(+)
+		order by b.dat
 		]]>
 	</select>
+	
+	<select id="salesChart" resultType="com.neomuj.dto.ChartDTO">
+		select count(*) chart_count, sum(odr_total_price) chart_price, to_char(odr_date, 'yyyy-mm-dd') chart_date
+		from order_tbl
+		where odr_date between TRUNC(sysdate , 'd') and TRUNC(sysdate , 'd')+6
+		group by to_char(odr_date, 'yyyy-mm-dd')
+		order by to_char(odr_date, 'yyyy-mm-dd')
+	</select>
+	
 	
 
 </mapper>

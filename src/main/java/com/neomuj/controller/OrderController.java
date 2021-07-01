@@ -97,6 +97,10 @@ public class OrderController {
 
 			model.addAttribute("cartVOList", cartvoList);
 
+			//즉시구매시 상품상세정보를 폼에 삽입하기위한 Model작업
+			model.addAttribute("pdt_num", pdt_num);
+			model.addAttribute("odr_amount", odr_amount);
+			model.addAttribute("odr_price", vo.getPdt_price());
 			
 		}else if(type.equals("2")) {
 			
@@ -133,6 +137,12 @@ public class OrderController {
 		
 		String mem_id =  ((MemberVO) session.getAttribute("loginStatus")).getMem_id();
 		vo.setMem_id(mem_id);
+		
+		log.info(mem_id);
+		
+		log.info(vo);
+		
+		log.info(vo2);
 		
 		if(type.equals("1")) {
 			

@@ -131,7 +131,7 @@ desired effect
 			      	 <fmt:formatNumber type="currency" value="${orderVO.odr_total_price }"/>
 			      </td>
 			      <td>
-			     	처리상태
+			     	결제완료
 			      </td>
 			    </tr>
 			   </c:forEach>
@@ -332,15 +332,15 @@ desired effect
 
 	<tr class="dy_order_detail"><td colspan="8">주문상세내역</td></tr>
 	<tr class="dy_order_detail">
-		<th>선택</th><th>번호</th><th>상품명</th><th>수량</th><th>상품가격</th><th>소계</th><th colspan="2">비고</th>
+		<th></th><th></th><th>상품명</th><th>수량</th><th>상품가격</th><th>소계</th><th colspan="2">비고</th>
 	</tr>
 	{{#each .}}
 	<tr class="dy_order_detail">>
 		<td>
-			선택
+			
 		</td>
 		<td>
-			번호
+			
 		</td>
 		<td>
 			<img src="/admin/order/displayFile?fileName={{pdt_img}}">
